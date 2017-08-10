@@ -5129,9 +5129,9 @@ long long solve(long long x,long long y)
 ///Lucas定理
 //求C(n,m)%p;
 long long fac[100005];
-long long  getFact(long long  p){
+void getFact(long long p){
     fac[0]=1;
-    for(int i=1;i<=p;i++)
+    for(int i=1;i<=MAXN;i++)
         fac[i]=(fac[i-1]*i)%p;
 }
 long long power(long long x,long long k,long long mod)
@@ -5263,6 +5263,15 @@ void invKT(int n, int k, int s[])
 
 ///Catalan Number
 //int num[10]={1,1,2,5,14,42,132,429,1430,4862};
+/*Application:
+1) 将n + 2 边形沿弦切割成n 个三角形的不同切割数
+2) n + 1 个数相乘, 加满括号的不同方法数
+3) n 个节点的不同形状的二叉树数
+4) 从n * n 方格的左上角移动到右下角不升路径数的一半
+5) 还有2n个人买票的问题，有n个人有5元钱，n个人有10元钱，票价为5元
+   求共有多少种排队方式可以保证对每一个拿十元的人都有5元钱能找给他
+6) n 个数依次入栈，每个数只能入栈出栈一次，有多少种出栈序列
+*/
 long long num[N];
 void Init()
 {
@@ -5272,20 +5281,31 @@ void Init()
         for(long long j=0;j<i;j++)
             num[i] += num[j]*num[i-j-1];
 }
-/*Application:
-1) 将n + 2 边形沿弦切割成n 个三角形的不同切割数
-2) n + 1 个数相乘, 加满括号的不同方法数
-3) n 个节点的不同形状的二叉树数
-4) 从n * n 方格的左上角移动到右下角不升路径数的一半
-5) 还有2n个人买票的问题，有n个人有5元钱，n个人有10元钱，票价为5元
-   求共有多少种排队方式可以保证对每一个拿十元的人都有5元钱能找给他
-6) n个数依次入栈，每个数只能入栈出栈一次，有多少种出栈序列
-*/
+
+///Stirling Number(First Kind)
+//1) 把含有n个元素的集合分成k个圆排列的方法数
+a[n][m]=a[n-1][m-1]+(n-1)*a[n-1][m];
+
+void init_stirling()
+{
+    stir[1][1]=1;
+    for(int i=1;i<maxn;i++)
+        stir[i][0]=0;
+    for(int i=2;i<maxn;i++)
+    {
+        for(int j=1;j<=i;j++)
+        {
+            stir[i][j] = stir[i-1][j-1] + (i-1)*stir[i-1][j];
+        }
+    }
+}
 
 ///Stirling Number(Second Kind)
 //1) S(n, m)表示含n 个元素的集合划分为m 个集合的情况数
 //2) 是n 个有标号的球放到m 个无标号的盒子中, 要求无一为空, 其不同的方案数
+//3) 若上述m 个盒子不要求非空，其方案数为 Sigma{ i=1..m, S(n, i) }
 a[n][m]=a[n-1][m-1]+m*a[n-1][m];
+/* 初值 */ a[1][1]=1; a[i][0]=0;
 
 ///容斥原理
 //大小为n1,n2,n3的三个集合，有多少种组合
