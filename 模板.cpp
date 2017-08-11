@@ -128,6 +128,7 @@ DP！！！！！
     康托展开
     逆康托展开
     Catalan Number
+    Stirling Number(First Kind)
     Stirling Number(Second Kind)
     容斥原理
     矩阵
@@ -5272,6 +5273,8 @@ void invKT(int n, int k, int s[])
    求共有多少种排队方式可以保证对每一个拿十元的人都有5元钱能找给他
 6) n 个数依次入栈，每个数只能入栈出栈一次，有多少种出栈序列
 */
+
+// Method 1:   O(n^2)
 long long num[N];
 void Init()
 {
@@ -5280,6 +5283,47 @@ void Init()
     for(long long i=2;i<=N;i++)
         for(long long j=0;j<i;j++)
             num[i] += num[j]*num[i-j-1];
+}
+
+// Method 2:  通过分解质因数，速度更快一些
+int n, cnt;
+int flag[2*MAXN],prime[MAXN],dy[2*MAXN],tot[MAXN];
+void getPri(){
+    for(int i=2; i <= 2*MAXN; i++) {
+        if(!flag[i]) {
+            prime[++cnt] = i;
+            dy[i] = cnt;
+        }
+        for(int j=1; prime[j]*i<=2*MAXN && j<=cnt; j++) {
+            flag[prime[j]*i] = 1;
+            dy[prime[j]*i] = j;
+            if (i%prime[j]==0) break;
+        }
+    }
+}
+void add(int x, int k) {
+    while(x!=1) {
+        tot[dy[x]] += k;
+        x /= prime[dy[x]];
+    }
+}
+LL Catalan(int n, int MOD) {
+    mem(flag); mem(prime); mem(dy); mem(tot);
+    cnt = 0;
+    getPri();
+
+    for(int i=n+1;i<=2*n;i++) add(i,1);
+    for(int i=1;i<=n;i++) add(i,-1);
+    add(n+1,-1);
+    
+    LL ans=1;
+    for(int i=1;i<=cnt;i++){
+        while(tot[i]){
+            ans=(ans*prime[i]) % MOD;
+            tot[i]--;
+        }
+    }
+    return ans;
 }
 
 ///Stirling Number(First Kind)
