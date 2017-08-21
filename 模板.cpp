@@ -647,14 +647,14 @@ int main()
 ///长度DP
 ///最大连续子序列之和
 //O(n)
-int solve(int a[],int n)
-{
-    int i,maxx;
-    int sum[N]={0};
-    sum[0]=max(a[0],0);
-    for(i=1;i<n;i++)
-        sum[i]=max(sum[i-1]+a[i],a[i]);
-    return sum[i-1];
+int maxSum(int A[]) {
+    int ans = 0, tmp = 0;
+    for(int i = 0; i < n; i++) {
+        tmp += A[i];
+        if(tmp < 0) tmp = 0;
+        ans = max(ans, tmp);
+    }
+    return ans;
 }
 
 ///最大子矩阵和
@@ -3572,7 +3572,7 @@ int main()
 
 ///dinic
 //O(V^2*E)
-struct edge{int x,y,next; int c;}e[M];
+struct edge{int x,y,next; int c;}e[M*2];
 int tot,head[N],ps[N],dep[N];
 void init()
 {
@@ -3687,7 +3687,7 @@ int maxFlow(int src,int des,int sum)
 struct Edge
 {
     int to,next,cap,flow;
-} edge[M];
+} edge[M*2];
 int tol;
 int head[N];
 int gap[N],dep[N],cur[N];
@@ -3799,7 +3799,7 @@ int maxFlow(int start,int ends,int sum)
 struct Edge
 {
     int to,next,cap,flow,cost;
-} edge[M];
+} edge[M*2];
 int head[N],tol,tot;//tot总节点数，0~tot-1
 int pre[N],dis[N];
 bool vis[N];
@@ -3890,10 +3890,10 @@ int minCostMaxflow(int s,int t,int &cost)
 //最大独立集：选取最多的点，集合中点之间无连接
 //二分图最大匹配==最小点覆盖==总点数-最大独立集
 int n,m,cnt;
-int f[N];
+int f[N+M];
 int vm[N],um[N];
 bool vis[N];
-vector<int>g[N];
+vector<int>g[N+M];
 void init()
 {
     cnt = 0;
@@ -4641,7 +4641,7 @@ long long mod_exp(long long a,long long b,long long n)
 //快速幂算法，数论二分
 long long mod_exp(long long a,long long b,long long c)
 {
-    long long res;
+    long long t;
     if(b==0)  return 1%c;
     if(b==1)  return a%c;
     //递归调用，采用二分递归算法，,注意这里n/2会带来奇偶性问题
