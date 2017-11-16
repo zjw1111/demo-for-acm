@@ -136,7 +136,7 @@ DP！！！！！
 计算几何！！！！！
     坐标向量等
     三角形
-        三角形面积公式
+        
         三角形内切圆半径公式
         三角形外接圆半径公式
         圆内接四边形面积公式
@@ -724,6 +724,7 @@ int fen(int num,int l,int r,int b[])
     }
     return l;
 }
+//b数组记录的结果是错误的，但是返回的长度lenn是正确的
 int LIS(int a[],int b[],int len)
 {
     int i,lenn;
@@ -5678,15 +5679,17 @@ void Graham(int n)
 		Stack[1] = 1;
 		return ;
 	}
-	Stack[0] = 0;
-	Stack[1] = 1;
-	top = 2;
-	for (int i = 2; i < n; i++)
-	{
-		while (top > 1 && sgn((hull[Stack[top-1]]-hull[Stack[top-2]])^(hull[i]-hull[Stack[top-2]])) <=0)
-			top--;
-		Stack[top++] = i;
-	}
+    Stack[0] = 0;
+    Stack[1] = 1;
+    Stack[2] = 2;
+    top = 2;
+    for (int i = 3; i < n; i++)
+    {
+        while ( top > 0 &&
+               sgn((hull[Stack[top]] - hull[Stack[top-1]]) ^ (hull[i] - hull[Stack[top-1]])) <= 0)
+                top--;
+        Stack[++top] = i;
+    }
 }
 
 ///3、平面最近点对
