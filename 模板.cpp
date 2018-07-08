@@ -5561,6 +5561,9 @@ double Area(Point p[],int n)
 		res += (p[i]^p[(i+1)%n])/2;
 	return fabs(res);
 }
+//皮克定理 - 计算顶点在格点上多边形面积
+//其中a表示多边形内部的点数，b表示多边形边界上的点数，S表示多边形的面积
+double S = a + b/2 - 1;
 
 //判断点在凸多边形内
 //点形成一个凸包，而且按逆时针排序（如果是顺时针把里面的<0改为>0）
@@ -5690,10 +5693,10 @@ void Graham(int n)
                 top--;
         Stack[++top] = i;
     }
+    top++;
 }
 
 ///3、平面最近点对
-int n;
 Point p[N];
 Point tmpt[N];
 bool cmpy(Point a,Point b)
@@ -5726,10 +5729,10 @@ double dfs(int left,int right)
 	}
 	return d;
 }
-double Closest_Pair()
+double Closest_Pair(int n)
 {
     sort(p,p+n);
-    return Closest_Pair(0,n-1)/2;
+    return dfs(0,n-1);
 }
 
 ///4、旋转卡壳
